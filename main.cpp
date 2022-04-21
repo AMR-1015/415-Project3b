@@ -26,7 +26,8 @@ int main(){
     
     search(root, "fun")? cout << "Yes\n" : cout << "No\n"; 
     search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
-    search(root, "party")? cout << "Yes\n" : cout << "No\n"; 
+    search(root, "birthday")? cout << "Yes\n" : cout << "No\n"; 
+    search(root, "happy")? cout << "Yes\n" : cout << "No\n"; 
     search(root, "and")? cout << "Yes\n" : cout << "No\n"; 
     search(root, "at")? cout << "Yes\n" : cout << "No\n"; 
 
@@ -40,14 +41,12 @@ vector<string> readWords(string fileName){
     vector<string> words;
 
    if(inputFile.is_open()){
-        while(inputFile){
-            getline(inputFile, word);
+        while(inputFile >> word){
             int lastCharacter = word.size()-1;
             if(!isalpha(word.at(lastCharacter))){
                 word.pop_back();
             }
             words.push_back(word);
-            if(inputFile.eof()) break;
         }
    }else{ cout << "Unable to open file." << endl;}
 
