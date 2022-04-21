@@ -5,15 +5,25 @@
 
 using namespace std;
 
-void readWords(ifstream fileName){
-    
-}
+vector<string> readWords(string fileName);
 
 int main(){
+    string fileName;
 
+    cout << "Enter name of the file: ";
+    cin >> fileName;
+
+    vector<string> words = readWords(fileName);
+    for(auto ele: words){
+        cout << ele << endl;
+    }
+    
+    return 0;
+}
+
+vector<string> readWords(string fileName){
     ifstream inputFile;
-    inputFile.open("test.txt");
-
+    inputFile.open(fileName);
     string word;
     vector<string> words;
 
@@ -28,10 +38,7 @@ int main(){
             if(inputFile.eof()) break;
         }
    }else{ cout << "Unable to open file." << endl;}
-    
-    for(auto ele: words){
-        cout << ele << endl;
-    }
 
-    return 0;
+   return words;
+    
 }

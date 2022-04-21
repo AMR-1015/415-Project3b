@@ -11,6 +11,7 @@
     "-Wpedantic"
   ],
   "C_Cpp_Runner.enableWarnings": true,
+  "code-runner.runInTerminal": true,
   "C_Cpp_Runner.warningsAsError": false,
   "C_Cpp_Runner.compilerArgs": [],
   "C_Cpp_Runner.linkerArgs": [],
