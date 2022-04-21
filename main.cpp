@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "trienode.cpp"
 
 using namespace std;
 
@@ -14,10 +15,21 @@ int main(){
     cin >> fileName;
 
     vector<string> words = readWords(fileName);
-    for(auto ele: words){
-        cout << ele << endl;
-    }
+    // for(auto ele: words){
+    //     cout << ele << endl;
+    // }
+
+    struct TrieNode *root = getNode();
+
+    for(int i = 0; i < words.size(); i++)
+        insert(root, words[i]);
     
+    search(root, "fun")? cout << "Yes\n" : cout << "No\n"; 
+    search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
+    search(root, "party")? cout << "Yes\n" : cout << "No\n"; 
+    search(root, "and")? cout << "Yes\n" : cout << "No\n"; 
+    search(root, "at")? cout << "Yes\n" : cout << "No\n"; 
+
     return 0;
 }
 
