@@ -28,10 +28,19 @@ int main(){
     search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
     search(root, "birthday")? cout << "Yes\n" : cout << "No\n"; 
     search(root, "happy")? cout << "Yes\n" : cout << "No\n"; 
-    search(root, "and")? cout << "Yes\n" : cout << "No\n"; 
-    search(root, "at")? cout << "Yes\n" : cout << "No\n"; 
 
+    cout << "Prefix search:" << endl;
+
+    int comp = printAutoSuggestions(root, "hell");
+ 
+    if (comp == -1)
+        cout << "No other strings found with this prefix\n";
+ 
+    else if (comp == 0)
+        cout << "No string found with this prefix\n";
+ 
     return 0;
+    
 }
 
 vector<string> readWords(string fileName){
