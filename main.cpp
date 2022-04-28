@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "trienode.cpp"
+#include "bstTrie.cpp"
 
 using namespace std;
 
@@ -20,25 +21,31 @@ int main(){
     // }
 
     struct TrieNode *root = getNode();
+    //struct TSTNode *TSTRoot = getTSTNode();
 
     for(int i = 0; i < words.size(); i++)
         insert(root, words[i]);
-    
+
+    // for(int i = 0; i < words.size(); i++)
+    //     insert(myTSTnode, words[i], i);
+
     search(root, "fun")? cout << "Yes\n" : cout << "No\n"; 
     search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
-    search(root, "birthday")? cout << "Yes\n" : cout << "No\n"; 
-    search(root, "happy")? cout << "Yes\n" : cout << "No\n"; 
 
+    // search(TSTRoot, "fun")? cout << "Yes\n" : cout << "No\n"; 
+    // search(TSTRoot, "this")? cout << "Yes\n" : cout << "No\n"; 
+    
+    
     cout << "Prefix search:" << endl;
 
-    vector<string> queryResult = AutoComplete(root, "aw");    
+    vector<string> queryResult = AutoComplete(root, "a");    
     if(queryResult.empty()){
         cout << "No suggestions found." << endl;
     }
     else{
         for(auto ele: queryResult){
             cout << ele << endl;
-    }
+        }
     }
     
     return 0;
