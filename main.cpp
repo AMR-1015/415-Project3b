@@ -31,14 +31,16 @@ int main(){
 
     cout << "Prefix search:" << endl;
 
-    int comp = printAutoSuggestions(root, "hell");
- 
-    if (comp == -1)
-        cout << "No other strings found with this prefix\n";
- 
-    else if (comp == 0)
-        cout << "No string found with this prefix\n";
- 
+    vector<string> queryResult = AutoComplete(root, "aw");    
+    if(queryResult.empty()){
+        cout << "No suggestions found." << endl;
+    }
+    else{
+        for(auto ele: queryResult){
+            cout << ele << endl;
+    }
+    }
+    
     return 0;
     
 }

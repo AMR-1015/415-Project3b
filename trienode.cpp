@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <queue>
 #include <vector>
 
 using namespace std;
@@ -7,12 +8,12 @@ using namespace std;
 // #define TRIENODE_H
 
 const int size = 26; 
-#define CHAR_TO_INDEX(c) ((int)c - (int)'a')
 
 struct TrieNode
 {
     struct TrieNode *children[size];
     bool isEndOfWord;
+    //vector<string> bfs(TrieNode *root, string str);
 };
 
 struct TrieNode *getNode(){
@@ -26,7 +27,6 @@ struct TrieNode *getNode(){
 
     return root;
 }
-
 
 void insert(struct TrieNode *root, string key){
     struct TrieNode *current = root;
@@ -57,52 +57,44 @@ bool search(struct TrieNode *root, string key){
     return (current->isEndOfWord);
 }
 
-bool isLastNode(struct TrieNode* root)
-{
-    for (int i = 0; i < size; i++)
-        if (root->children[i])
-            return false;
-    return true;
+vector<string> bfs(TrieNode *root, string str){
+  vector<string> res;
+  queue<pair<TrieNode*, string>> q;
+
+  TrieNode *cur = root;
+  q.push({cur, str}); 
+
+  while(!q.empty()){
+      TrieNode *cur = q.front().first;
+      string str = q.front().second;
+      q.pop();
+      if(cur->isEndOfWord == true){
+          res.push_back(str);
+      }
+      //if(ret.size()==MX_SIZE)break;
+      for(int i=0; i < size; i++){
+          if(cur->children[i] != nullptr){
+              q.push({cur->children[i], str + char(i + 'a')});
+          }
+      }
+  }
+  return res;
 }
 
-void suggestionsRec(struct TrieNode* root,
-                    string currPrefix)
-{
-    // found a string in Trie with the given prefix
-    if (root->isEndOfWord)
-        cout << currPrefix << endl;
- 
-    for (int i = 0; i < size; i++)
-        if (root->children[i]) {
-            // child node character value
-            char child = 'a' + i;
-            suggestionsRec(root->children[i],
-                           currPrefix + child);
-        }
+vector<string> AutoComplete(TrieNode *root, string str){
+  TrieNode *cur = root;
+  vector<string> res;
+
+  int prefixSize = str.length();
+
+  for(int i=0; i < prefixSize; i++){
+      int newIndex = str[i]-'a';
+      if(cur->children[newIndex] == nullptr)
+        return res;
+      cur = cur->children[newIndex];
+  }
+  return bfs(cur,str);
 }
 
-// print suggestions for given query prefix.
-int printAutoSuggestions(TrieNode* root, const string query)
-{
-    struct TrieNode* current = root;
-    for (char c : query) {
-        int ind = CHAR_TO_INDEX(c);
- 
-        // no string in the Trie has this prefix
-        if (!current->children[ind])
-            return false;
- 
-        current = current->children[ind];
-    }
-    // If prefix is present as a word, but
-    // there is no subtree below the last
-    // matching node.
-    if (isLastNode(current)) {
-        cout << query << endl;
-        return -1;
-    }
-    suggestionsRec(current, query);
-    return 1;
-}
 
 // #endif
