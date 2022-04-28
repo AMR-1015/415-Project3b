@@ -7,11 +7,11 @@ using namespace std;
 // #ifdef TRIENODE_H
 // #define TRIENODE_H
 
-const int size = 26; 
+const int childrenSize = 26; 
 
 struct TrieNode
 {
-    struct TrieNode *children[size];
+    struct TrieNode *children[childrenSize];
     bool isEndOfWord;
     //vector<string> bfs(TrieNode *root, string str);
 };
@@ -21,7 +21,7 @@ struct TrieNode *getNode(){
 
     root->isEndOfWord = false;
     
-    for(int i = 0; i < size; i++){
+    for(int i = 0; i < childrenSize; i++){
         root->children[i] = nullptr;
     }
 
@@ -71,8 +71,8 @@ vector<string> bfs(TrieNode *root, string str){
       if(cur->isEndOfWord == true){
           res.push_back(str);
       }
-      //if(ret.size()==MX_SIZE)break;
-      for(int i=0; i < size; i++){
+      //if(ret.childrenSize()==MX_childrenSize)break;
+      for(int i=0; i < childrenSize; i++){
           if(cur->children[i] != nullptr){
               q.push({cur->children[i], str + char(i + 'a')});
           }
@@ -85,9 +85,9 @@ vector<string> AutoComplete(TrieNode *root, string str){
   TrieNode *cur = root;
   vector<string> res;
 
-  int prefixSize = str.length();
+  int prefixchildrenSize = str.length();
 
-  for(int i=0; i < prefixSize; i++){
+  for(int i=0; i < prefixchildrenSize; i++){
       int newIndex = str[i]-'a';
       if(cur->children[newIndex] == nullptr)
         return res;
