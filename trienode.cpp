@@ -13,7 +13,6 @@ struct TrieNode
 {
     struct TrieNode *children[size];
     bool isEndOfWord;
-    //vector<string> bfs(TrieNode *root, string str);
 };
 
 struct TrieNode *getNode(){
@@ -71,7 +70,6 @@ vector<string> bfs(TrieNode *root, string str){
       if(cur->isEndOfWord == true){
           res.push_back(str);
       }
-      //if(ret.size()==MX_SIZE)break;
       for(int i=0; i < size; i++){
           if(cur->children[i] != nullptr){
               q.push({cur->children[i], str + char(i + 'a')});
