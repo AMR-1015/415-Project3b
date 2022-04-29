@@ -16,7 +16,7 @@ struct TSTNode{
         left = nullptr;
         right = nullptr;
         middle = nullptr;
-        numNodes=0;
+        numNodes = 0;
     }
 
     TSTNode *insert(TSTNode *root, string key, int idx){
@@ -26,12 +26,14 @@ struct TSTNode{
         if(idx==key.length()){
             if(cur == nullptr){
                 cur = new TSTNode();
+                //numNodes++;
             }
             cur->isEndOfWord = true;
             return cur;
         }
         if(cur==nullptr){
             cur = new TSTNode();
+            numNodes++;
             cur->value = key[idx];
         }
 

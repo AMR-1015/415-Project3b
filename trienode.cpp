@@ -13,12 +13,14 @@ struct TrieNode
 {
     struct TrieNode *children[size];
     bool isEndOfWord;
+    int numNodes;
 };
 
 struct TrieNode *getNode(){
     struct TrieNode *root = new TrieNode;
 
     root->isEndOfWord = false;
+    root->numNodes=0;
     
     for(int i = 0; i < size; i++){
         root->children[i] = nullptr;
@@ -33,8 +35,10 @@ void insert(struct TrieNode *root, string key){
     for(int i = 0; i < key.length(); i++){
         int index = key[i] - 'a';
 
-        if(!current->children[index])
+        if(!current->children[index]){
             current->children[index] = getNode();
+            root->numNodes++;
+        }
 
         current = current->children[index];
     }

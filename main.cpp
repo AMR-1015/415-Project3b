@@ -65,8 +65,8 @@ int main(){
 
     string inputPrefix;
 
-    cout << "\nTime taken to build the standard Trie is " << standardTrieTime << " nanoseconds and space occupied by it is " << standardTrieSpace << " nodes" << endl;
-    cout << "Time taken to build the BST based Trie is " << TST_Total_Time << " nanoseconds and space occupied by it is " << TST_Size << " nodes" << endl;
+    cout << "\nTime taken to build the standard Trie is " << standardTrieTime << " nanoseconds and space occupied by it is " << (root->numNodes + 1) * 26 << " nodes" << endl;
+    cout << "Time taken to build the BST based Trie is " << TST_Total_Time << " nanoseconds and space occupied by it is " << (TSTRoot->numNodes * 3) + 1 << " nodes" << endl;
 
     cout << "\nEnter search string: ";
     cin >> inputPrefix;
