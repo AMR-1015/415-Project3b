@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <cctype>
 #include <string>
 #include <algorithm>
 #include <ctime>
@@ -11,7 +12,7 @@ using namespace std;
 
 vector<string> readWords(string fileName);
 
-void caseTwo(TrieNode *, TSTNode *, vector<string>);
+void caseTwo(TrieNode *, TSTNode *, vector<string>, auto t1, auto t2, int s1, int s2);
 
 
 int main(){
@@ -37,6 +38,8 @@ int main(){
     std::clock_t endTrie; //timerEnd
     endTrie = std::clock();
 
+    auto standardTrieTime = (endTrie - startTrie)/(double)(CLOCKS_PER_SEC/10);
+
     //Trying to calculate size for Standard Trie
     std::sort(words.begin(), words.end(), [] (const std::string& first, const std::string& second){
         return first.size() < second.size();
@@ -48,25 +51,60 @@ int main(){
     int standardTrieSpace = wordSize * 26;
     std::cout << wordSize << std::endl;
 
+    std::clock_t startTST; //timerStart
+    startTST = std::clock();
     for(int i = 0; i < words.size(); i++)
          TSTRoot->insert(TSTRoot, words[i], 0);
 
-    
+    int TST_Size = (TSTRoot->numNodes) * 3;
+    std::clock_t endTST; //timerEnd
+    endTST = std::clock();
+
+    auto TST_Total_Time = (endTST - startTST)/(double)(CLOCKS_PER_SEC/10);
 
 
     string inputPrefix;
 
-    cout << "\nTime taken to build the standard Trie is " << (endTrie - startTrie)/(double)(CLOCKS_PER_SEC/10) << " nanoseconds and space occupied by it is " << standardTrieSpace << " nodes" << endl;
-    //cout << "Time taken to build the BST based Trie is " << TST_Duration.count() << " nanoseconds and space occupied by it is *******" << endl;
+    cout << "\nTime taken to build the standard Trie is " << standardTrieTime << " nanoseconds and space occupied by it is " << standardTrieSpace << " nodes" << endl;
+    cout << "Time taken to build the BST based Trie is " << TST_Total_Time << " nanoseconds and space occupied by it is " << TST_Size << " nodes" << endl;
 
     cout << "\nEnter search string: ";
     cin >> inputPrefix;
 
+    std::clock_t startTrieAuto;
+    startTrieAuto = clock();
+
     vector<string> standardTrieResult = AutoComplete(root, inputPrefix);
+
+    std::clock_t endTrieAuto;
+    endTrieAuto = clock();
+
+    std::clock_t startTSTAuto;
+    startTSTAuto = clock();
+
     vector<string> TSTResult = AutoComplete(TSTRoot, inputPrefix);
 
-    cout << "Time taken to search in the standard Trie is *******" << endl;
-    cout << "Auto-complete results using standard Trie are: ";
+    std::clock_t endTSTAuto;
+    endTSTAuto = clock();
+
+    std::clock_t startTrieSearch1;
+    startTrieSearch1 = clock();
+
+    search(root, inputPrefix );
+
+    std::clock_t endTrieSearch1;
+    endTrieSearch1 = clock();
+
+    std::clock_t startTSTSearch1;
+    startTSTSearch1 = clock();
+
+    TST_Search(TSTRoot, inputPrefix);
+
+    std::clock_t endTSTSearch1;
+    endTSTSearch1 = clock();
+
+    cout << "Time taken to search in the standard Trie is "<< (endTrieSearch1 - startTrieSearch1)/(double)(CLOCKS_PER_SEC/10) << endl;
+    cout << "Auto-complete results using standard Trie are: " ;
     if(standardTrieResult.empty()){
         cout << "No suggestions found." << endl;
     }
@@ -76,9 +114,9 @@ int main(){
         }
         cout << endl;
     }
-    cout << "Time taken to find auto-complete results in the standard Trie is *******" << endl;
+    cout << "Time taken to find auto-complete results in the standard Trie is " << (endTrieAuto - startTrieAuto)/(double)(CLOCKS_PER_SEC/10) << endl;
 
-    cout << "\nTime taken to search in the BST based Trie is *******" << endl;
+    cout << "\nTime taken to search in the BST based Trie is "<< (endTSTSearch1 - startTSTSearch1)/(double)(CLOCKS_PER_SEC/10) << endl;
     cout << "Auto-complete results using BST based Trie are: ";
     if(standardTrieResult.empty()){
         cout << "No suggestions found." << endl;
@@ -89,10 +127,10 @@ int main(){
         }
         cout << endl;
     }
-    cout << "Time taken to find auto-complete results in the BST based Trie is *******" << endl;
+    cout << "Time taken to find auto-complete results in the BST based Trie is " << (endTSTAuto - startTSTAuto)/(double)(CLOCKS_PER_SEC/10) << endl;
 
     cout << endl;
-    caseTwo(root, TSTRoot, words);
+    caseTwo(root, TSTRoot, words, standardTrieTime, TST_Total_Time, standardTrieSpace, TST_Size);
     // cout << "Stantard Trie:" << endl;
     // search(root, "fun")? cout << "Yes\n" : cout << "No\n"; 
     // search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
@@ -127,6 +165,8 @@ vector<string> readWords(string fileName){
    if(inputFile.is_open()){
         while(inputFile >> word){
             int lastCharacter = word.size()-1;
+            if(isupper(word[0]))
+                word[0] = tolower(word[0]);  
             if(!isalpha(word.at(lastCharacter))){
                 word.pop_back();
             }
@@ -138,7 +178,7 @@ vector<string> readWords(string fileName){
     
 }
 
-void caseTwo(TrieNode *root, TSTNode *TSTRoot, vector<string> words){
+void caseTwo(TrieNode *root, TSTNode *TSTRoot, vector<string> words, auto t1, auto t2, int s1, int s2){
     cout << "Case Two:" << endl;
     std::clock_t searchTST; //timerStart
     searchTST = std::clock();
@@ -157,9 +197,9 @@ void caseTwo(TrieNode *root, TSTNode *TSTRoot, vector<string> words){
     endTrieSearch = std::clock();
 
 
-    cout << "Time taken to build the standard Trie is ******* and space occupied by it is *******" << endl;
-    cout << "Time taken to build the BST based Trie is ******* and space occupied by it is *******" << endl;
+    cout << "Time taken to build the standard Trie is " << t1 << " millisconds and space occupied by it is " << s1 << " nodes" << endl;
+    cout << "Time taken to build the BST based Trie is " << t2 << " milliseconds and space occupied by it is " << s2 << " nodes" << endl;
 
-    cout << "\nTime taken to search all the strings in the standard Trie is *******" << (endTrieSearch - searchTrie)/(double)(CLOCKS_PER_SEC/10)  << endl;
+    cout << "\nTime taken to search all the strings in the standard Trie is " << (endTrieSearch - searchTrie)/(double)(CLOCKS_PER_SEC/10)  << endl;
     cout << "Time taken to search all the strings in the BST based Trie is "<< (endTST_Search - searchTST)/(double)(CLOCKS_PER_SEC/10) << endl;
 }

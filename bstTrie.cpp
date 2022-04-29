@@ -10,11 +10,13 @@ struct TSTNode{
     TSTNode *left, *middle, *right;
     char value;
 
+    int numNodes;
     TSTNode(){
         isEndOfWord = false;
         left = nullptr;
         right = nullptr;
         middle = nullptr;
+        numNodes=0;
     }
 
     TSTNode *insert(TSTNode *root, string key, int idx){
@@ -22,8 +24,9 @@ struct TSTNode{
         TSTNode *cur = root;
 
         if(idx==key.length()){
-            if(cur == nullptr)
+            if(cur == nullptr){
                 cur = new TSTNode();
+            }
             cur->isEndOfWord = true;
             return cur;
         }
@@ -38,6 +41,7 @@ struct TSTNode{
             cur->right = insert(cur->right, key, idx);
         else 
             cur->left = insert(cur->left, key, idx);
+        
         return cur;
     }
 
