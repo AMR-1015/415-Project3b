@@ -78,7 +78,7 @@ struct TSTNode{
 //     return cur;
 // }
 
-bool search(TSTNode *root, string key){
+bool TST_Search(TSTNode *root, string key){
   TSTNode *cur = root;
   
   int i = 0;
