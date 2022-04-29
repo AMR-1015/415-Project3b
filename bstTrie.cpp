@@ -16,7 +16,32 @@ struct TSTNode{
         right = nullptr;
         middle = nullptr;
     }
-}myTSTnode;
+
+    TSTNode *insert(TSTNode *root, string key, int idx){
+    
+        TSTNode *cur = root;
+
+        if(idx==key.length()){
+            if(cur == nullptr)
+                cur = new TSTNode();
+            cur->isEndOfWord = true;
+            return cur;
+        }
+        if(cur==nullptr){
+            cur = new TSTNode();
+            cur->value = key[idx];
+        }
+
+        if(key[idx] == cur->value)
+            cur->middle = insert(cur->middle, key, idx+1);
+        else if(key[idx] > cur->value)
+            cur->right = insert(cur->right, key, idx);
+        else 
+            cur->left = insert(cur->left, key, idx);
+        return cur;
+    }
+
+}*myTSTnode;
 
 // struct TSTNode *getTSTNode(){
 //     struct TSTNode *root = new TSTNode;
@@ -29,29 +54,29 @@ struct TSTNode{
 //     return root;
 // }
 
-TSTNode *insert(TSTNode *root, string key, int idx){
+// TSTNode *insert(TSTNode *root, string key, int idx){
     
-    TSTNode *cur = root;
+//     TSTNode *cur = root;
 
-    if(idx==key.length()){
-        if(cur == nullptr)
-            cur = new TSTNode();
-        cur->isEndOfWord = true;
-        return cur;
-    }
-    if(cur==nullptr){
-        cur = new TSTNode();
-        cur->value = key[idx];
-    }
+//     if(idx==key.length()){
+//         if(cur == nullptr)
+//             cur = new TSTNode();
+//         cur->isEndOfWord = true;
+//         return cur;
+//     }
+//     if(cur==nullptr){
+//         cur = new TSTNode();
+//         cur->value = key[idx];
+//     }
 
-    if(key[idx] == cur->value)
-        cur->middle = insert(cur->middle, key, idx+1);
-    else if(key[idx] > cur->value)
-        cur->right = insert(cur->right, key, idx);
-    else 
-        cur->left = insert(cur->left, key, idx);
-    return cur;
-}
+//     if(key[idx] == cur->value)
+//         cur->middle = insert(cur->middle, key, idx+1);
+//     else if(key[idx] > cur->value)
+//         cur->right = insert(cur->right, key, idx);
+//     else 
+//         cur->left = insert(cur->left, key, idx);
+//     return cur;
+// }
 
 bool search(TSTNode *root, string key){
   TSTNode *cur = root;

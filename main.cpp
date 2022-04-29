@@ -21,32 +21,70 @@ int main(){
     // }
 
     struct TrieNode *root = getNode();
-    //struct TSTNode *TSTRoot = getTSTNode();
+    struct TSTNode *TSTRoot = new TSTNode;
 
     for(int i = 0; i < words.size(); i++)
         insert(root, words[i]);
 
-    // for(int i = 0; i < words.size(); i++)
-    //     insert(myTSTnode, words[i], i);
+    for(int i = 0; i < words.size(); i++)
+         TSTRoot->insert(TSTRoot, words[i], 0);
 
-    search(root, "fun")? cout << "Yes\n" : cout << "No\n"; 
-    search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
+    string inputPrefix;
 
-    // search(TSTRoot, "fun")? cout << "Yes\n" : cout << "No\n"; 
-    // search(TSTRoot, "this")? cout << "Yes\n" : cout << "No\n"; 
-    
-    
-    cout << "Prefix search:" << endl;
+    cout << "\nTime taken to build the standard Trie is ******* and space occupied by it is *******" << endl;
+    cout << "Time taken to build the BST based Trie is ******* and space occupied by it is *******" << endl;
 
-    vector<string> queryResult = AutoComplete(root, "a");    
-    if(queryResult.empty()){
+    cout << "\nEnter search string: ";
+    cin >> inputPrefix;
+
+    vector<string> standardTrieResult = AutoComplete(root, inputPrefix);
+    vector<string> TSTResult = AutoComplete(TSTRoot, inputPrefix);
+
+    cout << "Time taken to search in the standard Trie is *******" << endl;
+    cout << "Auto-complete results using standard Trie are: ";
+    if(standardTrieResult.empty()){
         cout << "No suggestions found." << endl;
     }
     else{
-        for(auto ele: queryResult){
-            cout << ele << endl;
+        for(auto ele: standardTrieResult){
+            cout << ele << ", ";
         }
+        cout << endl;
     }
+    cout << "Time taken to find auto-complete results in the standard Trie is *******" << endl;
+
+    cout << "\nTime taken to search in the BST based Trie is *******" << endl;
+    cout << "Auto-complete results using BST based Trie are: ";
+    if(standardTrieResult.empty()){
+        cout << "No suggestions found." << endl;
+    }
+    else{
+        for(auto ele: TSTResult){
+            cout << ele << ", ";
+        }
+        cout << endl;
+    }
+    cout << "Time taken to find auto-complete results in the BST based Trie is *******" << endl;
+    // cout << "Stantard Trie:" << endl;
+    // search(root, "fun")? cout << "Yes\n" : cout << "No\n"; 
+    // search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
+
+    // cout << "\nTST Trie:" << endl;
+    // search(TSTRoot, "hello")? cout << "Yes\n" : cout << "No\n"; 
+    // search(TSTRoot, "help")? cout << "Yes\n" : cout << "No\n"; 
+    
+    
+   // cout << "\nPrefix search:" << endl;
+
+    // vector<string> queryResult = AutoComplete(TSTRoot, inputPrefix);    
+    // if(queryResult.empty()){
+    //     cout << "No suggestions found." << endl;
+    // }
+    // else{
+    //     for(auto ele: queryResult){
+    //         cout << ele << endl;
+    //     }
+    // }
     
     return 0;
     
