@@ -23,10 +23,13 @@ int main(){
     cout << "Enter name of the file: ";
     cin >> fileName;
 
+    // if(argc != 2){
+    //     std::cout << "Usage" << argv[0] << " nameOfAnInputFile " << std:: endl;
+    // }
     
     vector<string> words = readFile(fileName);
-    //words = wordHelper(words);
-    //cout << "Words in file:" << endl;
+   
+    // cout << "Words in file:" << endl;
     // for(auto ele: words){
     //     cout << ele << endl;
     // }
@@ -45,7 +48,6 @@ int main(){
     endTrie = std::clock();
 
     auto standardTrieTime = (endTrie - startTrie)/(double)(CLOCKS_PER_SEC/10);
-
     int standardTrieSpace = (root->numNodes + 1) * 26;
 
     std::clock_t startTST; //timerStart
@@ -64,187 +66,112 @@ int main(){
 
     cout << "\nTime taken to build the standard Trie is " << standardTrieTime << " nanoseconds and space occupied by it is " << standardTrieSpace << " nodes" << endl;
     cout << "Time taken to build the BST based Trie is " << TST_Total_Time << " nanoseconds and space occupied by it is " << TST_Size << " nodes" << endl;
+    
+    int i = 0;
+    while(i < 3){
+        cout << "\nEnter search string: ";
+        cin >> inputPrefix;
 
-    cout << "\nEnter search string: ";
-    cin >> inputPrefix;
+        std::clock_t startTrieAuto;
+        startTrieAuto = clock();
 
-    std::clock_t startTrieAuto;
-    startTrieAuto = clock();
+        vector<string> standardTrieResult = AutoComplete(root, inputPrefix);
 
-    vector<string> standardTrieResult = AutoComplete(root, inputPrefix);
+        std::clock_t endTrieAuto;
+        endTrieAuto = clock();
 
-    std::clock_t endTrieAuto;
-    endTrieAuto = clock();
+        std::clock_t startTSTAuto;
+        startTSTAuto = clock();
 
-    std::clock_t startTSTAuto;
-    startTSTAuto = clock();
+        vector<string> TSTResult = AutoComplete(TSTRoot, inputPrefix);
 
-    vector<string> TSTResult = AutoComplete(TSTRoot, inputPrefix);
+        std::clock_t endTSTAuto;
+        endTSTAuto = clock();
 
-    std::clock_t endTSTAuto;
-    endTSTAuto = clock();
+        std::clock_t startTrieSearch1;
+        startTrieSearch1 = clock();
 
-    std::clock_t startTrieSearch1;
-    startTrieSearch1 = clock();
+        search(root, inputPrefix );
 
-    search(root, inputPrefix );
+        std::clock_t endTrieSearch1;
+        endTrieSearch1 = clock();
 
-    std::clock_t endTrieSearch1;
-    endTrieSearch1 = clock();
+        std::clock_t startTSTSearch1;
+        startTSTSearch1 = clock();
 
-    std::clock_t startTSTSearch1;
-    startTSTSearch1 = clock();
+        TST_Search(TSTRoot, inputPrefix);
 
-    TST_Search(TSTRoot, inputPrefix);
+        std::clock_t endTSTSearch1;
+        endTSTSearch1 = clock();
 
-    std::clock_t endTSTSearch1;
-    endTSTSearch1 = clock();
-
-    cout << "Time taken to search in the standard Trie is "<< (endTrieSearch1 - startTrieSearch1)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
-    cout << "Auto-complete results using standard Trie are: " ;
-    if(standardTrieResult.empty()){
-        cout << "No suggestions found." << endl;
-    }
-    else{
-        for(auto ele: standardTrieResult){
-            cout << ele << ", ";
+        cout << "Time taken to search in the standard Trie is "<< (endTrieSearch1 - startTrieSearch1)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
+        cout << "Auto-complete results using standard Trie are: " ;
+        if(standardTrieResult.empty()){
+            cout << "No suggestions found." << endl;
         }
-        cout << endl;
-    }
-    cout << "Time taken to find auto-complete results in the standard Trie is " << (endTrieAuto - startTrieAuto)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
-
-    cout << "\nTime taken to search in the BST based Trie is "<< (endTSTSearch1 - startTSTSearch1)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
-    cout << "Auto-complete results using BST based Trie are: ";
-    if(standardTrieResult.empty()){
-        cout << "No suggestions found." << endl;
-    }
-    else{
-        for(auto ele: TSTResult){
-            cout << ele << ", ";
+        else{
+            for(auto ele: standardTrieResult){
+                cout << ele << ", ";
+            }
+            cout << endl;
         }
-        cout << endl;
+        cout << "Time taken to find auto-complete results in the standard Trie is " << (endTrieAuto - startTrieAuto)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
+
+        cout << "\nTime taken to search in the BST based Trie is "<< (endTSTSearch1 - startTSTSearch1)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
+        cout << "Auto-complete results using BST based Trie are: ";
+        if(standardTrieResult.empty()){
+            cout << "No suggestions found." << endl;
+        }
+        else{
+            for(auto ele: TSTResult){
+                cout << ele << ", ";
+            }
+            cout << endl;
+        }
+        cout << "Time taken to find auto-complete results in the BST based Trie is " << (endTSTAuto - startTSTAuto)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
+
+        i++;
+
     }
-    cout << "Time taken to find auto-complete results in the BST based Trie is " << (endTSTAuto - startTSTAuto)/(double)(CLOCKS_PER_SEC/10) << " milliseconds."  << endl;
+    
 
     cout << endl;
     caseTwo(root, TSTRoot, words, standardTrieTime, TST_Total_Time, standardTrieSpace, TST_Size);
-    // cout << "Stantard Trie:" << endl;
-    // search(root, "fun")? cout << "Yes\n" : cout << "No\n"; 
-    // search(root, "this")? cout << "Yes\n" : cout << "No\n"; 
-
-    // cout << "\nTST Trie:" << endl;
-    // search(TSTRoot, "hello")? cout << "Yes\n" : cout << "No\n"; 
-    // search(TSTRoot, "help")? cout << "Yes\n" : cout << "No\n"; 
-    
-    
-   // cout << "\nPrefix search:" << endl;
-
-    // vector<string> queryResult = AutoComplete(TSTRoot, inputPrefix);    
-    // if(queryResult.empty()){
-    //     cout << "No suggestions found." << endl;
-    // }
-    // else{
-    //     for(auto ele: queryResult){
-    //         cout << ele << endl;
-    //     }
-    // }
-    
+   
     return 0;
     
 }
 
-vector<string> readFile(string fileName){
+vector<string> readFile(string fileName)
+{
     ifstream inputFile;
     inputFile.open(fileName);
     string word;
+    //string word2;
     char c;
     vector<string> words;
 
     if(inputFile.is_open()){
-        while(inputFile >> word){
-    
-            if(!isalpha(word[0]))
-                word.erase(0,1);
-            if(isupper(word[0]))
-                word[0] = tolower(word[0]);  
-
-            int lastCharacter = word.size()-1;
-            int lastCharacter2 = word.size()-2;
-
-            if(!isalpha(word.at(lastCharacter))){
-                word.pop_back();
-                // int lastCharacter = word.size()-1;
-                // int lastCharacter2 = word.size()-2;
-                if(!isalpha(word.at(word.size()-1))){
-                    word.pop_back();
-                }
-                else if(isalpha(word.at(word.size()-1)) && !isalpha(word.at(word.size()-2))){
-                    word.pop_back();
-                    word.pop_back();
-                }
-                //words.push_back(word);
-            }
-            else if(isalpha(word.at(lastCharacter)) && !isalpha(word.at(lastCharacter2))){
-                word.pop_back();
-                word.pop_back();
-                //words.push_back(word);
-            }
-            
-            words.push_back(word);
+        while(inputFile.get(c)){
+           if(isalpha(c)){
+               word += c;
+           }
+           else{
+                if(word == "s") word.clear();
+                if(word.empty()) continue;
+                if(isupper(word[0])) word[0] = tolower(word[0]);  
+                words.push_back(word);
+                word.clear();
+           }
+           
         }
+       
    }else{ cout << "Unable to open file." << endl;}
 
    return words;
+
 }
 
-vector<string> wordHelper(vector<string> words){
-    vector<string> res;
-    string word1, word2, word3;
-    std::size_t pos;
-    for (auto ele: words){
-        pos = ele.find("--");
-        if (pos!=std::string::npos){
-            word1 = ele.substr(0,pos);
-            word2 = ele.substr(pos + 1);
-            pos = word2.find("-");
-            if(pos!=std::string::npos){
-                word2 = word2.substr(0, pos);
-                word3 = word2.substr(pos + 1);
-                res.push_back(word1);
-                res.push_back(word2);
-            }else {
-                res.push_back(word1);
-                res.push_back(word2);
-            }
-            
-        }else{
-            res.push_back(ele);
-        }
-    }
-    return res;
-}
-
-vector<string> readWords(string fileName){
-    ifstream inputFile;
-    inputFile.open(fileName);
-    string word;
-    vector<string> words;
-
-   if(inputFile.is_open()){
-        while(inputFile >> word){
-            int lastCharacter = word.size()-1;
-            if(isupper(word[0]))
-                word[0] = tolower(word[0]);  
-            if(!isalpha(word.at(lastCharacter))){
-                word.pop_back();
-            }
-            words.push_back(word);
-        }
-   }else{ cout << "Unable to open file." << endl;}
-
-   return words;
-    
-}
 
 void caseTwo(TrieNode *root, TSTNode *TSTRoot, vector<string> words, auto t1, auto t2, int s1, int s2){
     cout << "Case Two:" << endl;
