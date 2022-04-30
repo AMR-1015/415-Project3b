@@ -11,6 +11,8 @@
 using namespace std;
 
 vector<string> readWords(string fileName);
+vector<string> readFile(string fileName);
+vector<string> wordHelper(vector<string> words);
 
 void caseTwo(TrieNode *, TSTNode *, vector<string>, auto t1, auto t2, int s1, int s2);
 
@@ -21,12 +23,14 @@ int main(){
     cout << "Enter name of the file: ";
     cin >> fileName;
 
+    
+    vector<string> words = readFile(fileName);
+    //words = wordHelper(words);
     //cout << "Words in file:" << endl;
-    vector<string> words = readWords(fileName);
     // for(auto ele: words){
     //     cout << ele << endl;
     // }
-    //cout << endl;
+    // cout << endl;
 
     struct TrieNode *root = getNode();
     struct TSTNode *TSTRoot = new TSTNode;
@@ -147,6 +151,77 @@ int main(){
     
     return 0;
     
+}
+
+vector<string> readFile(string fileName){
+    ifstream inputFile;
+    inputFile.open(fileName);
+    string word;
+    char c;
+    vector<string> words;
+
+    if(inputFile.is_open()){
+        while(inputFile >> word){
+    
+            if(!isalpha(word[0]))
+                word.erase(0,1);
+            if(isupper(word[0]))
+                word[0] = tolower(word[0]);  
+
+            int lastCharacter = word.size()-1;
+            int lastCharacter2 = word.size()-2;
+
+            if(!isalpha(word.at(lastCharacter))){
+                word.pop_back();
+                // int lastCharacter = word.size()-1;
+                // int lastCharacter2 = word.size()-2;
+                if(!isalpha(word.at(word.size()-1))){
+                    word.pop_back();
+                }
+                else if(isalpha(word.at(word.size()-1)) && !isalpha(word.at(word.size()-2))){
+                    word.pop_back();
+                    word.pop_back();
+                }
+                //words.push_back(word);
+            }
+            else if(isalpha(word.at(lastCharacter)) && !isalpha(word.at(lastCharacter2))){
+                word.pop_back();
+                word.pop_back();
+                //words.push_back(word);
+            }
+            
+            words.push_back(word);
+        }
+   }else{ cout << "Unable to open file." << endl;}
+
+   return words;
+}
+
+vector<string> wordHelper(vector<string> words){
+    vector<string> res;
+    string word1, word2, word3;
+    std::size_t pos;
+    for (auto ele: words){
+        pos = ele.find("--");
+        if (pos!=std::string::npos){
+            word1 = ele.substr(0,pos);
+            word2 = ele.substr(pos + 1);
+            pos = word2.find("-");
+            if(pos!=std::string::npos){
+                word2 = word2.substr(0, pos);
+                word3 = word2.substr(pos + 1);
+                res.push_back(word1);
+                res.push_back(word2);
+            }else {
+                res.push_back(word1);
+                res.push_back(word2);
+            }
+            
+        }else{
+            res.push_back(ele);
+        }
+    }
+    return res;
 }
 
 vector<string> readWords(string fileName){
